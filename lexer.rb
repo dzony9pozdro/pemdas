@@ -6,11 +6,18 @@ star_op = ""
 current_number = ""
 mystery_chars = ""
 
+
+
+
 input.each_char do |c|
   if c == " "
+    current_number = flush.call(current_number)
+    star_op = flush.call(star_op)
+
   elsif c == "\n"
-    flush.call(current_number)
-    flush.call(star_op)
+    current_number = flush.call(current_number)
+    star_op = flush.call(star_op)
+    
   elsif "0123456789.".include?(c)
     star_op = flush.call(star_op)
     current_number << c
@@ -22,7 +29,7 @@ input.each_char do |c|
 
   elsif c == "*"
     star_op << "*"
-    flush.call(current_number)
+    current_number = flush.call(current_number)
 
   else
     mystery_chars << (c)
