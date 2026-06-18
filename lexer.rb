@@ -1,37 +1,29 @@
-def lex(input)
-  tokenized_expression = []
-  flush = ->(x) { tokenized_expression << x unless x.empty? ; ""}
-  star_op = ""
-  current_number = ""
-  mystery_chars = ""
+module Lexer
+  def self.lex(input)
+    tokenized_expression = []
+    flush = ->(x) { tokenized_expression << x unless x.empty? ; ""}
+    current_number = ""
+    mystery_chars = ""
 
-  input.each_char do |c|
-    if c == " "
-      current_number = flush.call(current_number)
-      star_op = flush.call(star_op)
+    input.each_char do |c|
+      if c == " "
+        current_number = flush.call(current_number)
 
-    elsif "0123456789.".include?(c)
-      star_op = flush.call(star_op)
-      current_number << c
+      elsif "0123456789.".include?(c)
+        current_number << c
 
-    elsif "+-/()".include?(c)
-      current_number = flush.call(current_number)
-      star_op = flush.call(star_op)
-      tokenized_expression << c
+      elsif "+-/()^*".include?(c)
+        current_number = flush.call(current_number)
+        tokenized_expression << c
 
-    elsif c == "*"
-      star_op << "*"
-      current_number = flush.call(current_number)
-
-    else
-      mystery_chars << (c)
-      puts "tf is this: #{mystery_chars}"
-
+      else
+        mystery_chars << (c)
+      end
     end
-  end
 
-  current_number = flush.call(current_number)
-  star_op = flush.call(star_op)
-      
-  tokenized_expression
+    current_number = flush.call(current_number)
+        
+    puts "tf is this: #{mystery_chars}" unless mystery_chars.empty?
+    tokenized_expression
+  end
 end
